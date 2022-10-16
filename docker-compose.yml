@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  # ##########################################
+  # #       TEST CONTAINER - puppeteer       #
+  # ##########################################
+  # - Discomment this section to run the test container*
+  # tests:
+  #   build: ./app/tests
+  #   restart: on-failure
+  #   depends_on:
+  #     - frontend
+  #     - backend
+  #   environment:
+  #     FRONT_HOST: frontend
+
+  # ############################################
+  # #        FRONTEND CONTAINER - react        #
+  # ############################################
+  frontend:
+    build: ./app/frontend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    # Discomment this section to run the test container*
+    # environment:
+    #   REACT_APP_API_HOST: backend
+
+  # ############################################
+  # #        BACKEND CONTAINER - nodejs        #
+  # ############################################
+  backend:
+    build: ./app/backend
+    restart: always
+    ports:
+      - 3001:3001
+# ----------------------------------------------------------------------------
+# * You need to discomment because the test container works with puppeteer
+#   and the ip address of the frontend container is not the same as the host
+#   ip address. So, you need to set the frontend container ip address as an
+#   environment variable to the test container.
+#   And frontend container needs to know the backend container ip address to
+#   make the requests.
+# ----------------------------------------------------------------------------
